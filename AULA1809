@@ -1,0 +1,97 @@
+LOGIN.PHP
+
+<?php
+// Obtém os valores digitados
+$email = $_POST["email"];
+$senha = $_POST["senha"];
+
+include "conecta_mysql.inc";
+
+//Escapa os caracteres especiais, para evitar ataques
+
+
+
+// Acesso ao banco de dados
+$resultado = $conexao->query("SELECT * FROM usuarios WHERE email='$email'");
+$linhas = $resultado->num_rows;
+if($linhas==0) // Testa se a consulta retornou algum registro
+{
+    echo "<html><body>";
+    echo "<p align=\"center\">E-mail não encontrado!</p>";
+    echo "<p align=\"center\"><a href=\"login.html\">Voltar</a></p>";
+    echo "</body></html>";
+}
+else
+{
+    $dados = $resultado->fetch_array();
+    $senha_banco = $dados["senha"];
+
+    if ($senha != $senha_banco) // Confere senha
+    {
+        echo "<html><body>";
+        echo "<p align=\"center\">A senha está incorreta!</p>";
+        echo "<p align=\"center\"><a href=\"login.html\">Voltar</a></p>";
+        echo "</body></html>";
+    }
+    else //Usuário e senha corretos. Vamos criar os cookies
+    {
+        setcookie("email_usuario", $email);
+        setcookie("senha_usuario", $senha);
+        // Direciona para a página inicial dos usuários cadastrados
+        header ("Location: index.php");
+    }
+}
+$conexao->close();
+?>
+
+
+
+
+
+LOGOUT.PHP
+<?php
+   setcookie("email_usuario");
+   setcookie("senha_usuario");
+   header("Location: login.html");
+?>
+
+
+
+VALIDA_COOKIES.INC
+<?php
+if(IsSet($_COOKIE["email_usuario]))
+    $email_usuario = $_COOKIE["email_usuario"];
+if(IsSet($_COOKIE["senha_usuario"]))
+    $senha_usuario = $_COOKIE["senha_usuario"];
+
+if(!(empty($email_usuario) OR empty($senha_usuario)))
+{
+    include "conecta_mysql.inc";
+
+    // Escapa os caracteres especiais, para evitar ataques de SQL Injection
+    $email_usuario = $conexao->real_escape_string($email_usuario);
+    $senha_usuario = $conexao->real_escape_string($senha_usuario);
+
+    // Consulta ao banco de dados
+    $resultado = $conexao->query("SELECT * FROM usuarios WHERE email='$email_usuario' AND senha='$senha_usuario'");
+    if($resultado->num_rows==0)
+    {
+        setcookie("email_usuario");
+        setcookie("senha_usuario):
+        echo "Você não efetuou o login!";
+        exit();
+    }
+}
+else
+{
+    echo{Você não efetuou o <a href='login.html'>login</a>!>};
+    exit();
+}
+$conexao->close();
+?>
+
+
+
+R: localhost/php_aulas/cookies/login.php
+
+e tem coisa no MySQL também....
