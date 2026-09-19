@@ -1,3 +1,13 @@
+CONECTA_MYSQL.INC
+
+
+INDEX.PHP
+
+
+LOGIN.HTML
+
+
+
 LOGIN.PHP
 
 <?php
@@ -94,4 +104,31 @@ $conexao->close();
 
 R: localhost/php_aulas/cookies/login.php
 
-e tem coisa no MySQL também....
+e tem coisa no MySQL também.... (ligar sql e apache no xxamp, esqueci dissokkkkkkk)
+COOKIES
+
+CREATE DATABASE cookies;
+show tables.
+CREATE TABLE usuarios
+(
+email varchar(100) NOT NULL,
+senha varchar(20) NOT NULL,
+nome varchar(100) NOT NULL,
+cidade varchar(50) NOT NULL,
+estado char(2) NOT NULL,
+primary key(email)
+);
+
+INSERT INTO usuarios VALUES ('andremaya@gmail.com', 'teste', 'ANDRE MAIA', 'SÃO PAULO', 'SP');
+
+
+
+***********phpMyAdmin
+-->gerar senha para o cookies (ou root, independe do nome), para proteção, é melhor<--
+nesse site 
+
+****no index, colocar LOGOUT
+
+
+
+
